@@ -67,22 +67,33 @@ def vertical_check(board: list) -> bool:
 
 def one_coloured_cells(board: list) -> list:
     """
+    Pick all cells with the same colour and return them as a new list.
+
+    >>> one_coloured_cells(["**** ****", "***1 ****", "**  3****", "* 4 1****", "     9 5 ",\
+                            " 6  83  *", "3   1  **", "  8  2***", "  2  ****"])
+    ['****  3   2  ****', '***  6  8  2***', '** 4    1  **', '*1    83  *', '  31 9 5 ']
+
+    >>> one_coloured_cells(["****1****", "*** 2****", "**  3****", "*   4****", "    56781",\
+                            "        *", "2      **", "      ***", "3 4  ****"])
+    ['****  2 3 4  ****', '***         ***', '**         **', '*         *', '123456781']
     """
     same_coloured_sells = []
-    index = 0
-    column_index = len(board) - 1
+    column_index = 0
+    row_index = len(board) - 1
 
-    while index != len(board) - 4:
+    while column_index != len(board) - 4:
         row_1 = ''
         row_2 = ''
 
-        for row in board[:column_index]:
-            row_1 += row[index]
-        row_2 += board[column_index][len(board) - column_index - 1:]
+        for row in board[:row_index]:
+            row_1 += row[column_index]
+
+        row_2 += board[row_index][len(board) - row_index - 1:]
         new_row = row_1 + row_2
         same_coloured_sells.append(new_row)
-        index += 1
-        column_index -= 1
+
+        column_index += 1
+        row_index -= 1
 
     return same_coloured_sells
 
