@@ -1,9 +1,6 @@
 """
-GitHub link
+GitHub link: https://github.com/alorthius/lab1_puzzle
 """
-
-
-import doctest
 
 
 def horizontal_check(board: list) -> bool:
@@ -68,19 +65,41 @@ def vertical_check(board: list) -> bool:
     return horizontal_check(rotate_board_to_vertical(board))
 
 
+def one_coloured_cells(board: list) -> list:
+    """
+    """
+    same_coloured_sells = []
+    index = 0
+    column_index = len(board) - 1
+
+    while index != len(board) - 4:
+        row_1 = ''
+        row_2 = ''
+
+        for row in board[:column_index]:
+            row_1 += row[index]
+        row_2 += board[column_index][len(board) - column_index - 1:]
+        new_row = row_1 + row_2
+        same_coloured_sells.append(new_row)
+        index += 1
+        column_index -= 1
+
+    return same_coloured_sells
+
+
 def coloured_check(board: list) -> bool:
     """
     Check the uniquness of the digits in every same-coloured cell.
     Return True if every digit is unique and False if not.
 
-    # >>> coloured_check(["****1****", "*** 2****", "**  3****", "*   4****", "    56781",\
-    #        "        *", "2      **", "      ***", "3 4  ****"])
-    # False
-    # >>> coloured_check(["**** ****", "*** 2****", "**  3****", "*   4****", "    56781",\
-    #        "        *", "2      **", "      ***", "3 4  ****"])
-    # True
+    >>> coloured_check(["****1****", "*** 2****", "**  3****", "*   4****", "    56781",\
+           "        *", "2      **", "      ***", "3 4  ****"])
+    False
+    >>> coloured_check(["**** ****", "*** 2****", "**  3****", "*   4****", "    56781",\
+           "        *", "2      **", "      ***", "3 4  ****"])
+    True
     """
-    pass
+    return horizontal_check(one_coloured_cells(board))
 
 
 def validate_board(board: list) -> bool:
@@ -90,20 +109,18 @@ def validate_board(board: list) -> bool:
     >>> validate_board(["**** ****", "***1 ****", "**  3****", "* 4 1****", "     9 5 ",\
                         " 6  83  *", "3   1  **", "  8  2***", "  2  ****"])
     False
-    >>> validate_board(["**** ****", "***1 ****", "**  3****", "* 4 9****", "     9 5 ",\
+    >>> validate_board(["**** ****", "***1 ****", "**  3****", "* 4 7****", "     9 5 ",\
                         " 6  83  *", "3   1  **", "  8  2***", "  2  ****"])
     True
 
-    # >>> validate_board(["****1****", "*** 2****", "**  3****", "*   4****", "    56781",\
-    #        "        *", "2      **", "      ***", "3 4  ****"])
-    # False
-    # >>> validate_board(["**** ****", "*** 2****", "**  3****", "*   4****", "    56781",\
-    #        "        *", "2      **", "      ***", "3 4  ****"])
-    # True
+    >>> validate_board(["****1****", "*** 2****", "**  3****", "*   4****", "    56781",\
+           "        *", "2      **", "      ***", "3 4  ****"])
+    False
+    >>> validate_board(["**** ****", "*** 2****", "**  3****", "*   4****", "    56781",\
+           "        *", "2      **", "      ***", "3 4  ****"])
+    True
     """
-    if (not horizontal_check(board) or not horizontal_check(rotate_board_to_vertical(board))):
+    if (not horizontal_check(board) or not horizontal_check(rotate_board_to_vertical(board))
+            or not coloured_check(board)):
         return False
     return True
-
-
-# doctest.testmod(verbose=False)
